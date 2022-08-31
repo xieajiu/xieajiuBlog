@@ -48,12 +48,16 @@ menu:
 # side info card
 card:
     enable: true
-    description: ["Description..."] # You can add more
+    description: ["程序员", "爱玩"] # You can add more
     icon_links:
         github:
             name: github
             theme: brands
-            link: https://github.com/argvchs
+            link: https://github.com/xieajiu
+        email:
+            name: envelope
+            theme: solid
+            link: mailto:xieajiu@163.com
         # Example:
         # <name>:
         #    name: <icon-name>
