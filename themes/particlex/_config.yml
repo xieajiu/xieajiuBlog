@@ -38,7 +38,7 @@ menu:
     标签:
         name: tags
         theme: solid
-        src: /tagss
+        src: /tags
     # Example:
     # <name>:
     #     name: <icon-name>
