@@ -1,65 +1,72 @@
-<% var rootlink = config.root; %> 
-<div class="categories-tags">
-    <% var posts = []; %>
-    <div class="all-s">
-        <% site.categories.data.forEach(function(category) { %>
-        <% 
-            var color = ["background: #ffa2c4", "background: #00bcd4", "background: #03a9f4", "background: #00a596", "background: #ff7d73"];
-            if (is_category(category.name))
-                var color = ["background: linear-gradient(120deg, #9abbf7 0%, #ffbbf4 100%)"];
-            var num = Math.floor(Math.random() * color.length);
+<div id="archives">
+    <% let posts = []; %>
+    <div class="categories-tags">
+        <% site.categories.data.forEach(category => { %>
+        <%
+            const color = is_category(category.name)
+                ? ["linear-gradient(120deg, #9abbf7 0%, #ffbbf4 100%)"]
+                : ["#ffa2c4", "#00bcd4", "#03a9f4", "#00a596", "#ff7d73"];
+            let id = Math.floor(Math.random() * color.length);
         %>
         <span>
-            <a href="<%- rootlink %><%- category.path %>" style="<%- color[num] %>">
+            <a href="<%- url_for(category.path) %>" style="background: <%- color[id] %>">
                 <span class="icon">
-                    <svg class="fa-icon"><use xlink:href="#circle-user-solid"></use></svg>
+                    <i class="fa-solid fa-circle-user"></i>
                 </span>
                 <%= category.name %>
             </a>
         </span>
-        <% if (is_category(category.name)) { posts = category.posts; } %><% }); %>
-    </div>
-    <div id="archives">
-        <% posts.forEach(function(post) { %>
-        <div class="timeline">
-            <div class="timeline-tail"></div>
-            <div class="timeline-content">
-                <div class="item-time"><%= date(post.date, "YYYY/M/D") %></div>
-                <a href="<%- rootlink %><%- post.path %>">
-                    <h3><%= titlecase(post.title) %></h3>
-                </a>
-                <div class="info">
-                    <% if (post.categories && post.categories.data.length != 0){ %>
-                    <span class="category">
-                        <a href="<%- rootlink %><%- post.categories.data[0].path %>">
-                            <span class="icon">
-                                <svg class="fa-icon"><use xlink:href="#circle-user-solid"></use></svg>
-                            </span>
-                            <%= post.categories.data[0].name %>
-                        </a>
-                    </span>
-                    <% } %>
-                    <% if (post.tags && post.tags.data.length != 0) { %>
-                    <span class="tags">
-                        <span class="icon">
-                            <svg class="fa-icon"><use xlink:href="#tags-solid"></use></svg>
-                        </span>
-                        <% post.tags.data.forEach(function(data) {%>
-                        <span class="tag">
-                            <% 
-                                var color = ["color: #ffa2c4", "color: #00bcd4", "color: #03a9f4", "color: #00a596", "color: #ff7d73"];
-                                var num = Math.floor(Math.random() * color.length);
-                            %>
-                            <a href="<%- rootlink %><%- data.path %>" style="<%- color[num] %>">
-                                <%= data.name %>
-                            </a>
-                        </span>
-                        <% }); %>
-                    </span>
-                    <% } %>
-                </div>
-            </div>
-        </div>
+        <% if (is_category(category.name)) { %>
+        <%
+            posts = category.posts;
+            posts.data.sort((a, b) => b.date - a.date);
+        %>
+        <% } %>
         <% }); %>
     </div>
+    <% posts.forEach(post => { %>
+    <div class="timeline">
+        <div class="timeline-tail"></div>
+        <div class="timeline-content">
+            <div class="item-time"><%= date(post.date, "YYYY/M/D") %></div>
+            <a href="<%- url_for(post.path) %>">
+                <h3><%= post.title %></h3>
+            </a>
+            <div class="info">
+                <% if (post.categories && post.categories.data.length !== 0) { %>
+                <span class="category">
+                    <a href="<%- url_for(post.categories.data[0].path) %>">
+                        <span class="icon">
+                            <i class="fa-solid fa-circle-user"></i>
+                        </span>
+                        <%= post.categories.data[0].name %>
+                    </a>
+                </span>
+                <% } %>
+                <% if (post.tags && post.tags.data.length !== 0) { %>
+                <span class="tags">
+                    <span class="icon">
+                        <i class="fa-solid fa-tags fa-fw"></i>
+                    </span>
+                    <% post.tags.data.forEach(tag => { %>
+                    <span class="tag">
+                        <%
+                            const color = [
+                                "color: #ffa2c4",
+                                "color: #00bcd4",
+                                "color: #03a9f4",
+                                "color: #00a596",
+                                "color: #ff7d73",
+                            ];
+                            let id = Math.floor(Math.random() * color.length);
+                        %>
+                        <a href="<%- url_for(tag.path) %>" style="<%- color[id] %>"><%= tag.name %></a>
+                    </span>
+                    <% }); %>
+                </span>
+                <% } %>
+            </div>
+        </div>
+    </div>
+    <% }); %>
 </div>

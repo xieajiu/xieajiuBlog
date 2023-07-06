@@ -1,7 +1,6 @@
 <div id="home-head">
-    <div id="home-background" style="background-image: url(<%- theme.home_background %>)"></div>
-    <% if (theme.head_block_enable) { %>
-    <div id="home-info" class="home-info" @click="home_click">
+    <div id="home-background" ref="homeBackground" data-images="<%- theme.background.map(url_for) %>"></div>
+    <div id="home-info" @click="homeClick">
         <span class="loop"></span>
         <span class="loop"></span>
         <span class="loop"></span>
@@ -14,19 +13,15 @@
             </div>
         </span>
     </div>
-    <% } %>
 </div>
-<% wrapClass = theme.card.enable ? "" : "home-posts-wrap-no-card"; %>
-<div id="home-posts-wrap" class="<%- wrapClass %>">
+<div id="home-posts-wrap" <%- theme.card.enable || 'class="home-posts-wrap-no-card"' %> ref="homePostsWrap">
     <div id="home-posts">
-        <div id="posts">
-            <%- include("posts") %>
-            <%- include("current") %>
-        </div>
+        <%- partial("posts") %>
+        <%- partial("current") %>
     </div>
     <% if (theme.card.enable) { %>
     <div id="home-card">
-        <%- include("card") %>
+        <%- partial("card") %>
     </div>
     <% } %>
 </div>
